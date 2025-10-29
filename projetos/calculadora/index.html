@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="pt-BR"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Calculadora Simples</title>
+<style>
+  body{margin:0;background:#0f1117;color:#e6f1ff;font:16px/1.5 system-ui;display:grid;place-items:center;height:100dvh}
+  .calc{width:min(360px,92vw);background:#0b0d12;border:1px solid #2a2f3a;border-radius:16px;overflow:hidden}
+  .disp{padding:18px;font:600 2rem ui-monospace;text-align:right;border-bottom:1px solid #2a2f3a;min-height:64px}
+  .grid{display:grid;grid-template-columns:repeat(4,1fr)}
+  button{padding:18px;border:1px solid #2a2f3a;background:#10131a;color:#e6f1ff;font:600 1.1rem system-ui;cursor:pointer}
+  button.op{background:#151a23} .eq{background:linear-gradient(135deg,#22e1ff,#a855f7);color:#001;font-weight:800}
+</style>
+<div class="calc" role="application" aria-label="Calculadora">
+  <div id="disp" class="disp" aria-live="polite">0</div>
+  <div class="grid">
+    <button>7</button><button>8</button><button>9</button><button class="op">/</button>
+    <button>4</button><button>5</button><button>6</button><button class="op">*</button>
+    <button>1</button><button>2</button><button>3</button><button class="op">-</button>
+    <button>0</button><button>.</button><button id="c">C</button><button class="op">+</button>
+    <button class="eq" style="grid-column:1/5">=</button>
+  </div>
+</div>
+<script>
+  const disp = document.getElementById('disp');
+  let expr = '';
+  const show=()=>disp.textContent = expr || '0';
+  function add(v){ expr+=v; show(); }
+  function clear(){ expr=''; show(); }
+  function evalSafe(){
+    try{
+      const res = Function('return ('+expr+')')();
+      expr = (res===undefined||Number.isNaN(res)) ? '' : String(res);
+      show();
+    }catch{ disp.textContent='Erro'; expr=''; }
+  }
+  document.querySelectorAll('button').forEach(b=>{
+    b.onclick=()=>{
+      const t=b.textContent;
+      if(t==='C') return clear();
+      if(t==='=') return evalSafe();
+      if(t==='.' && /(\.\d*)$/.test(expr)) return;
+      add(t);
+    };
+  });
+  window.addEventListener('keydown',e=>{
+    if(/[0-9+\-*/.]/.test(e.key)) add(e.key);
+    else if(e.key==='Enter') evalSafe();
+    else if(e.key==='Escape') clear();
+  });
+  show();
+</script>
+</html>

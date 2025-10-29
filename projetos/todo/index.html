@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="pt-BR"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>To-Do Minimal</title>
+<style>
+  :root{--bg:#0f1117;--fg:#e6f1ff;--mut:#9fb0c0;--stroke:#2a2f3a}
+  body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 system-ui;padding:28px}
+  .wrap{max-width:680px;margin:auto}
+  input,button{font:inherit}
+  .row{display:flex;gap:.6rem}
+  input[type=text]{flex:1;padding:.7rem .9rem;border-radius:10px;border:1px solid var(--stroke);background:#0b0d12;color:var(--fg)}
+  button{padding:.7rem 1rem;border-radius:999px;border:1px solid var(--stroke);background:#151a23;color:var(--fg);font-weight:700}
+  ul{list-style:none;padding:0;margin:14px 0}
+  li{display:flex;align-items:center;justify-content:space-between;gap:.6rem;border:1px solid var(--stroke);border-radius:10px;padding:.6rem .8rem;margin:.5rem 0;background:#0b0d12}
+  li.done span{text-decoration:line-through;color:var(--mut)}
+  .small{color:var(--mut);font-size:.9rem}
+</style>
+<main class="wrap">
+  <h1>To-Do Minimal</h1>
+  <p class="small">Enter para adicionar. Clique no item para marcar como feito. Salva no navegador.</p>
+  <form id="form" class="row" aria-label="Adicionar tarefa">
+    <input id="txt" type="text" placeholder="Nova tarefa..." aria-label="Nova tarefa" required>
+    <button>Adicionar</button>
+  </form>
+  <ul id="list" aria-live="polite"></ul>
+  <p class="small"><button id="clear" type="button">Limpar concluídas</button></p>
+</main>
+<script>
+  const $ = s=>document.querySelector(s);
+  const list = $('#list'), input = $('#txt'), form = $('#form');
+  let tasks = JSON.parse(localStorage.getItem('tasks')||'[]');
+  const save=()=>localStorage.setItem('tasks', JSON.stringify(tasks));
+  function render(){
+    list.innerHTML = '';
+    tasks.forEach((t,i)=>{
+      const li = document.createElement('li');
+      li.innerHTML = `<span>${t.text}</span><button aria-label="Excluir">🗑</button>`;
+      if(t.done) li.classList.add('done');
+      li.querySelector('span').onclick=()=>{ t.done=!t.done; save(); render(); };
+      li.querySelector('button').onclick=()=>{ tasks.splice(i,1); save(); render(); };
+      list.appendChild(li);
+    });
+  }
+  form.onsubmit=e=>{
+    e.preventDefault();
+    const v=input.value.trim(); if(!v) return;
+    tasks.unshift({text:v, done:false}); input.value=''; save(); render();
+  };
+  document.getElementById('clear').onclick=()=>{ tasks = tasks.filter(t=>!t.done); save(); render(); };
+  render();
+</script>
+</html>

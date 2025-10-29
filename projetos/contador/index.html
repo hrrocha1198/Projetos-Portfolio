@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="pt-BR"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Contador / Timer</title>
+<style>
+  body{margin:0;background:#0f1117;color:#e6f1ff;font:16px/1.5 system-ui;display:grid;place-items:center;height:100dvh}
+  .box{width:min(520px,94vw);background:#0b0d12;border:1px solid #2a2f3a;border-radius:16px;padding:22px}
+  .row{display:flex;gap:.6rem;flex-wrap:wrap}
+  input{padding:.6rem .8rem;border-radius:10px;border:1px solid #2a2f3a;background:#10131a;color:#e6f1ff;min-width:120px}
+  button{padding:.6rem 1rem;border-radius:999px;border:1px solid #2a2f3a;background:#151a23;color:#e6f1ff;font-weight:700}
+  .big{font:800 2.4rem ui-monospace;margin:14px 0}
+  .muted{color:#9fb0c0}
+</style>
+<div class="box">
+  <h1>Contador / Timer</h1>
+  <div class="big" id="out" aria-live="polite">0</div>
+  <div class="row">
+    <button id="menos">−</button>
+    <button id="mais">+</button>
+    <button id="zerar">Zerar</button>
+  </div>
+  <hr style="border-color:#2a2f3a;margin:18px 0">
+  <p><strong>Timer regressivo</strong> <span class="muted">(segundos)</span></p>
+  <div class="row" style="margin-bottom:10px">
+    <input id="sec" type="number" min="1" placeholder="Ex.: 10">
+    <button id="start">Iniciar</button>
+    <button id="stop">Parar</button>
+  </div>
+  <p class="muted">Dica: use <kbd>Espaço</kbd> para pausar/continuar o timer.</p>
+</div>
+<script>
+  const out = document.getElementById('out'); let n = 0;
+  const draw=()=>out.textContent = n;
+  document.getElementById('menos').onclick=()=>{ n--; draw(); };
+  document.getElementById('mais').onclick=()=>{ n++; draw(); };
+  document.getElementById('zerar').onclick=()=>{ n=0; draw(); };
+
+  // timer
+  const sec = document.getElementById('sec');
+  let left=0, t=null, running=false;
+  function tick(){ if(left<=0){ stop(); alert('Tempo encerrado!'); return; } left--; out.textContent = left; }
+  function start(){
+    const v = parseInt(sec.value,10);
+    if(!v||v<=0) return alert('Informe segundos (>0).');
+    left=v; out.textContent = left;
+    if(t) clearInterval(t);
+    t=setInterval(tick,1000); running=true;
+  }
+  function stop(){ if(t){ clearInterval(t); t=null; } running=false; }
+  document.getElementById('start').onclick=start; document.getElementById('stop').onclick=stop;
+  window.addEventListener('keydown',e=>{ if(e.code==='Space'){ e.preventDefault(); running?stop():start(); }});
+  draw();
+</script>
+</html>
