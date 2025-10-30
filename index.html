@@ -3,12 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>H. R. Rocha | Desenvolvedor de Sistemas Júnior</title>
+  <title>Henrique de M. Rocha | Desenvolvedor de Sistemas Júnior</title>
   <meta name="description" content="Portfólio futurista com HTML, CSS e JavaScript puros — responsivo, acessível e performático." />
-  <meta name="color-scheme" content="dark light" />
-  <meta property="og:title" content="H. R. Rocha | Desenvolvedor de Sistemas Júnior" />
-  <meta property="og:description" content="Portfólio front-end com tema futurista, animações e projetos simples demonstrativos." />
-  <meta name="theme-color" content="#0ff">
+  <meta name="theme-color" content="#0ff" />
   <style>
     :root{
       --bg:#0a0b0f; --bg-2:#0f1117; --text:#e6f1ff; --muted:#9fb0c0;
@@ -21,320 +18,128 @@
       radial-gradient(1200px 600px at 10% -10%, rgba(34,225,255,0.15), transparent 60%),
       radial-gradient(1000px 600px at 90% 0%, rgba(168,85,247,0.14), transparent 60%),
       var(--bg); color:var(--text); font-family:var(--sans); line-height:1.6; overflow-x:hidden}
-    a{color:inherit} .container{max-width:var(--maxw); margin-inline:auto; padding:0 20px}
-    .btn{display:inline-flex; align-items:center; gap:.6rem; padding:.8rem 1.1rem; border-radius:999px; border:1px solid var(--stroke);
-      background:linear-gradient(135deg,var(--primary),var(--accent)); color:#001; font-weight:700; text-decoration:none; box-shadow:0 10px 24px -8px var(--shadow)}
-    .btn.ghost{background:transparent; color:var(--text); border:1px solid var(--stroke); backdrop-filter:saturate(150%) blur(6px)}
-    .chip{font:700 .75rem var(--mono); padding:.35rem .7rem; border-radius:999px; border:1px solid var(--stroke); background:rgba(255,255,255,.06)}
-    .badge{display:inline-block; padding:.35rem .7rem; border-radius:999px; border:1px solid var(--stroke); background:var(--glass); color:var(--muted); font:600 .8rem var(--mono)}
-
-    header{position:sticky; top:0; z-index:50; backdrop-filter:saturate(180%) blur(10px);
-      background:linear-gradient(to bottom, rgba(0,0,0,.35), rgba(0,0,0,0)); border-bottom:1px solid var(--stroke)}
-    .nav{display:flex; align-items:center; justify-content:space-between; height:68px}
-    .brand{display:flex; align-items:center; gap:.75rem; text-decoration:none}
-    .logo{width:34px; height:34px; border-radius:8px; background:conic-gradient(from 0deg,var(--primary),var(--accent),var(--primary));
-      box-shadow:0 6px 22px -8px var(--shadow), inset 0 0 18px rgba(34,225,255,.35); position:relative; isolation:isolate}
-    .logo::after{content:""; position:absolute; inset:2px; border-radius:7px; background:var(--bg-2)}
-    .brand span{font-weight:800; letter-spacing:.4px}
-    .nav-actions{display:flex; align-items:center; gap:.6rem}
-    .theme{inline-size:42px; block-size:42px; display:grid; place-items:center; border-radius:999px; border:1px solid var(--stroke); background:var(--card); cursor:pointer}
-
-    #stars{position:fixed; inset:0; z-index:-1}
-    .hero{padding:84px 0 36px; display:grid; gap:26px}
-    .hero h1{font-size:clamp(2rem,4vw + 1rem,3.4rem); line-height:1.1; margin:0; letter-spacing:.4px}
-    .gradient-text{background:linear-gradient(90deg,var(--primary),var(--accent)); -webkit-background-clip:text; background-clip:text; color:transparent; text-shadow:0 0 20px rgba(34,225,255,.2)}
-    .sub{max-width:70ch; color:var(--muted)} .hero-cta{display:flex; gap:.8rem; flex-wrap:wrap}
-    .hero-grid{display:grid; grid-template-columns:1.2fr .8fr; gap:28px; align-items:center}
-    .glass{border:1px solid var(--stroke); background:linear-gradient(180deg,var(--glass),transparent); border-radius:var(--radius); padding:22px; box-shadow:0 20px 40px -20px var(--shadow)}
-    .terminal{background:radial-gradient(120% 120% at 0% 0%, rgba(34,225,255,.08), transparent 60%), var(--bg-2); border-radius:var(--radius); border:1px solid var(--stroke); overflow:hidden; font-family:var(--mono)}
-    .term-head{display:flex; gap:.4rem; align-items:center; padding:10px 12px; border-bottom:1px solid var(--stroke)}
-    .dot{width:10px; height:10px; border-radius:50%} .dot.r{background:#ff5f57}.dot.y{background:#ffbd2e}.dot.g{background:#28c840}
-    .term-body{padding:16px; font-size:.9rem; max-height:320px; overflow:auto; white-space:pre-wrap}
-
-    section{padding:52px 0} .section-head{display:flex; align-items:center; justify-content:space-between; margin-bottom:18px}
-    h2{margin:0; font-size:clamp(1.4rem, 1.4rem + 1vw, 2rem)}
-    .grid{display:grid; gap:18px; grid-template-columns:repeat(12,1fr)} .col-4{grid-column:span 4} .col-6{grid-column:span 6} .col-8{grid-column:span 8}
-    .card{background:linear-gradient(180deg,var(--card),transparent); border:1px solid var(--stroke); border-radius:var(--radius); padding:18px; position:relative; overflow:hidden;
-      transition:transform .2s ease, border-color .2s ease; will-change:transform}
-    .card:hover{transform:translateY(-2px); border-color:rgba(34,225,255,.45)}
-    .kpi{font:800 2rem var(--mono)} .muted{color:var(--muted)}
-
-    .projects{row-gap:22px}
-    .proj{display:flex; flex-direction:column; gap:14px; min-height:240px;
-      background: radial-gradient(120% 120% at -30% -30%, rgba(34,225,255,.13), transparent 60%), linear-gradient(180deg, var(--card), transparent)}
-    .proj .thumb{aspect-ratio:16/9; border-radius:12px; border:1px solid var(--stroke);
-      background:linear-gradient(135deg, rgba(34,225,255,.15), rgba(168,85,247,.15)); display:grid; place-items:center; font:700 .9rem var(--mono); color:var(--muted);
-      position:relative; overflow:hidden}
-
-    .skill{display:grid; gap:8px}
-    .bar{height:10px; border-radius:999px; background:rgba(255,255,255,.08); overflow:hidden; border:1px solid var(--stroke)}
-    .bar > span{display:block; height:100%; width:0%; background:linear-gradient(90deg,var(--primary),var(--accent)); transition:width 1.2s ease}
-
-    input,textarea{width:100%; padding:12px 14px; border-radius:12px; border:1px solid var(--stroke); background:var(--bg-2); color:var(--text); font:500 1rem var(--sans)}
-    textarea{min-height:120px; resize:vertical} .helper{font:.85rem var(--mono); color:var(--muted)}
-    footer{padding:36px 0 56px; color:var(--muted); border-top:1px solid var(--stroke)}
-
-    @media (max-width:900px){.hero-grid{grid-template-columns:1fr} .col-8,.col-6,.col-4{grid-column:span 12}}
+    a{color:inherit;text-decoration:none}
+    .container{max-width:var(--maxw);margin-inline:auto;padding:0 20px}
+    .btn{display:inline-flex;align-items:center;gap:.6rem;padding:.8rem 1.1rem;border-radius:999px;
+      background:linear-gradient(135deg,var(--primary),var(--accent));color:#001;font-weight:700;
+      box-shadow:0 10px 24px -8px var(--shadow);border:none;cursor:pointer;text-decoration:none}
+    .btn.ghost{background:transparent;color:var(--text);border:1px solid var(--stroke);backdrop-filter:saturate(150%) blur(6px)}
+    .chip{font:700 .75rem var(--mono);padding:.35rem .7rem;border-radius:999px;border:1px solid var(--stroke);
+      background:rgba(255,255,255,.06)}
+    .badge{display:inline-block;padding:.35rem .7rem;border-radius:999px;border:1px solid var(--stroke);
+      background:var(--glass);color:var(--muted);font:600 .8rem var(--mono)}
+    header{position:sticky;top:0;z-index:50;backdrop-filter:saturate(180%) blur(10px);
+      background:linear-gradient(to bottom, rgba(0,0,0,.35), rgba(0,0,0,0));border-bottom:1px solid var(--stroke)}
+    .nav{display:flex;align-items:center;justify-content:space-between;height:68px}
+    .brand{display:flex;align-items:center;gap:.75rem}
+    .logo{width:34px;height:34px;border-radius:8px;background:conic-gradient(from 0deg,var(--primary),var(--accent),var(--primary));
+      box-shadow:0 6px 22px -8px var(--shadow), inset 0 0 18px rgba(34,225,255,.35);position:relative}
+    .logo::after{content:"";position:absolute;inset:2px;border-radius:7px;background:var(--bg-2)}
+    .brand span{font-weight:800;letter-spacing:.4px}
+    .nav-actions{display:flex;align-items:center;gap:.6rem}
+    .hero{padding:84px 0 36px;display:grid;gap:26px}
+    .hero h1{font-size:clamp(2rem,4vw + 1rem,3.4rem);line-height:1.1;margin:0}
+    .gradient-text{background:linear-gradient(90deg,var(--primary),var(--accent));
+      -webkit-background-clip:text;color:transparent;text-shadow:0 0 20px rgba(34,225,255,.2)}
+    .sub{max-width:70ch;color:var(--muted)}.hero-cta{display:flex;gap:.8rem;flex-wrap:wrap}
+    .glass{border:1px solid var(--stroke);background:linear-gradient(180deg,var(--glass),transparent);
+      border-radius:var(--radius);padding:22px;box-shadow:0 20px 40px -20px var(--shadow)}
+    .terminal{background:radial-gradient(120% 120% at 0% 0%, rgba(34,225,255,.08), transparent 60%), var(--bg-2);
+      border-radius:var(--radius);border:1px solid var(--stroke);overflow:hidden;font-family:var(--mono)}
+    .term-head{display:flex;gap:.4rem;align-items:center;padding:10px 12px;border-bottom:1px solid var(--stroke)}
+    .dot{width:10px;height:10px;border-radius:50%}.dot.r{background:#ff5f57}.dot.y{background:#ffbd2e}.dot.g{background:#28c840}
+    .term-body{padding:16px;font-size:.9rem;max-height:320px;overflow:auto;white-space:pre-wrap}
+    section{padding:52px 0}
+    h2{margin:0;font-size:clamp(1.4rem,1.4rem+1vw,2rem)}
+    footer{padding:36px 0 56px;color:var(--muted);border-top:1px solid var(--stroke)}
   </style>
 </head>
 <body>
-  <canvas id="stars" aria-hidden="true"></canvas>
-
-  <header role="banner">
+  <header>
     <div class="container nav">
-      <a class="brand" href="#top" aria-label="H. R. Rocha Início">
-        <div class="logo" aria-hidden="true"></div>
-        <span>H. R. Rocha</span>
-      </a>
-      <nav aria-label="primária" class="nav-actions">
+      <a class="brand" href="#top"><div class="logo"></div><span>Henrique de M. Rocha</span></a>
+      <nav class="nav-actions">
         <a class="btn ghost" href="#projetos">Projetos</a>
-        <button class="theme" id="themeBtn" aria-label="Alternar tema" title="Alternar tema">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M12 3a9 9 0 1 0 9 9c0-4.97-4.03-9-9-9Z" stroke="currentColor" stroke-width="1.7"/>
-          </svg>
-        </button>
-        <a class="btn" href="#contato">Entrar em contato</a>
+        <a class="btn" href="#contato">Contato</a>
       </nav>
     </div>
   </header>
 
-  <main id="top">
-    <section class="hero container">
-      <div class="hero-grid">
-        <div class="glass">
-          <span class="badge">DESENVOLVEDOR DE SISTEMAS JÚNIOR</span>
-          <h1>Construo experiências web <span class="gradient-text">rápidas, acessíveis</span> e com estética futurista.</h1>
-          <p class="sub"><strong>“Olá, sou H. R. Rocha, Desenvolvedor de Sistemas Júnior apaixonado por tecnologia e inovação.”</strong></p>
-          <p class="sub">HTML semântico, CSS moderno (Grid/Flex, animações, glassmorphism), JavaScript vanilla performático (IntersectionObserver, Canvas), boas práticas de acessibilidade e SEO.</p>
-          <div class="hero-cta">
-            <a class="btn" href="#projetos">Ver projetos</a>
-            <a class="btn ghost" href="#sobre">Sobre mim</a>
-            <a class="btn ghost" href="#skills">Skills</a>
-          </div>
+  <main class="container" id="top">
+    <section class="hero">
+      <div class="glass">
+        <span class="badge">DESENVOLVEDOR DE SISTEMAS JÚNIOR</span>
+        <h1>Construo experiências web <span class="gradient-text">rápidas e acessíveis</span> com estética futurista.</h1>
+        <p class="sub"><strong>“Olá, sou Henrique de M. Rocha, Desenvolvedor de Sistemas Júnior apaixonado por tecnologia e inovação.”</strong></p>
+        <p class="sub">HTML semântico, CSS moderno, JavaScript vanilla performático, boas práticas de acessibilidade e SEO.</p>
+        <div class="hero-cta">
+          <a class="btn" href="#projetos">Ver projetos</a>
+          <a class="btn ghost" href="#skills">Skills</a>
         </div>
-        <div class="terminal" aria-label="Terminal de exemplo">
-          <div class="term-head">
-            <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
-            <span style="margin-left:.6rem; opacity:.7">npm run build</span>
-          </div>
-          <div class="term-body" id="terminal" role="region" aria-live="polite"></div>
+      </div>
+      <div class="terminal">
+        <div class="term-head">
+          <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+          <span style="margin-left:.6rem;opacity:.7">git log — últimos commits</span>
         </div>
+        <div class="term-body" id="terminal"></div>
       </div>
     </section>
 
-    <section id="sobre" class="container">
-      <div class="section-head">
-        <h2>Sobre</h2>
-        <span class="badge">Clean code • A11y • Performance</span>
-      </div>
-      <div class="grid">
-        <article class="card col-8">
-          <p>Sou Desenvolvedor de Sistemas Júnior focado em front-end, criando interfaces elegantes e performáticas. Gosto de unir <strong>estética</strong> e <strong>usabilidade</strong>, com atenção a detalhes, componentes reutilizáveis e DX.</p>
-          <p>Stack favorita: HTML semântico, CSS moderno (Grid/Flex, variables, @media queries), JavaScript vanilla/ES modules. Também me viro bem com acessibilidade (ARIA), Lighthouse e boas práticas de SEO.</p>
-        </article>
-        <aside class="card col-4">
-          <div class="kpi">+<span id="yearsExp">3</span> <span class="muted">anos</span></div>
-          <div class="muted">Experiência em projetos reais (landing pages, dashboards, e-commerce, microsites).</div>
-        </aside>
-      </div>
+    <section id="skills">
+      <h2>Skills</h2>
+      <p>HTML, CSS e JavaScript — nível intermediário com foco em acessibilidade e performance.</p>
     </section>
 
-    <section id="skills" class="container">
-      <div class="section-head">
-        <h2>Skills</h2>
-        <span class="badge">Sem frameworks — puro domínio de base</span>
-      </div>
-      <div class="grid">
-        <div class="card col-6 skill">
-          <div style="display:flex; justify-content:space-between">
-            <strong>HTML Semântico</strong><span class="muted">Intermediário</span>
-          </div>
-          <div class="bar"><span data-level="75"></span></div>
-          <small class="muted">Estrutura, landmarks, ARIA, SEO</small>
-        </div>
-        <div class="card col-6 skill">
-          <div style="display:flex; justify-content:space-between">
-            <strong>CSS Moderno</strong><span class="muted">Intermediário</span>
-          </div>
-          <div class="bar"><span data-level="72"></span></div>
-          <small class="muted">Grid, Flex, variables, animações</small>
-        </div>
-        <div class="card col-6 skill">
-          <div style="display:flex; justify-content:space-between">
-            <strong>JavaScript (ES)</strong><span class="muted">Intermediário</span>
-          </div>
-          <div class="bar"><span data-level="70"></span></div>
-          <small class="muted">IntersectionObserver, Canvas, performance</small>
-        </div>
-        <div class="card col-6 skill">
-          <div style="display:flex; justify-content:space-between">
-            <strong>Acessibilidade</strong><span class="muted">Intermediário</span>
-          </div>
-          <div class="bar"><span data-level="65"></span></div>
-          <small class="muted">Contrast, key nav, aria-live</small>
-        </div>
-      </div>
+    <section id="projetos">
+      <h2>Projetos</h2>
+      <ul>
+        <li><a href="./projetos/todo/index.html">Lista de Tarefas</a></li>
+        <li><a href="./projetos/calculadora/index.html">Calculadora Simples</a></li>
+        <li><a href="./projetos/contador/index.html">Contador / Timer</a></li>
+      </ul>
     </section>
 
-    <section id="projetos" class="container">
-      <div class="section-head">
-        <h2>Projetos</h2>
-        <a class="btn ghost" href="#contato">Disponível para frilas</a>
-      </div>
-      <div class="grid projects" id="projectsGrid" aria-live="polite"></div>
-    </section>
-
-    <section id="contato" class="container">
-      <div class="section-head">
-        <h2>Contato</h2>
-        <span class="badge">vamos construir algo incrível</span>
-      </div>
-      <div class="grid">
-        <div class="card col-6">
-          <form id="contactForm" aria-describedby="helper">
-            <input name="nome" aria-label="Seu nome" placeholder="Seu nome" required />
-            <input name="email" type="email" aria-label="Seu e-mail" placeholder="Seu e-mail" required />
-            <textarea name="mensagem" aria-label="Mensagem" placeholder="Como posso ajudar?" required></textarea>
-            <button class="btn" type="submit">Enviar</button>
-            <div id="helper" class="helper">* Sem backend: este demo abre o cliente de e-mail (mailto:). Troque por Formspree/Vercel Functions quando quiser.</div>
-          </form>
-        </div>
-        <div class="card col-6">
-          <p><strong>Links rápidos</strong></p>
-          <p class="muted">Troque pelos seus links reais depois:</p>
-          <p style="display:flex; gap:.6rem; flex-wrap:wrap">
-            <a class="chip" href="https://github.com/SEU_USUARIO" target="_blank" rel="noopener">GitHub (placeholder)</a>
-            <a class="chip" href="https://www.linkedin.com/in/SEU_USERNAME" target="_blank" rel="noopener">LinkedIn (placeholder)</a>
-            <a class="chip" href="#" aria-label="Currículo PDF">Currículo</a>
-            <a class="chip" href="#projetos">Portfólio</a>
-          </p>
-        </div>
-      </div>
+    <section id="contato">
+      <h2>Contato</h2>
+      <p>
+        <a href="https://github.com/hrrocha1198" class="chip" target="_blank">GitHub</a>
+        <a href="https://www.linkedin.com/in/henrique-rocha-926830244/" class="chip" target="_blank">LinkedIn</a>
+        <a href="./curriculo.pdf" class="chip" target="_blank">Currículo</a>
+        <a href="https://hrrocha1198.github.io/Projetos-Portfolio/" class="chip" target="_blank">Portfólio</a>
+      </p>
     </section>
   </main>
 
   <footer>
     <div class="container">
-      <span>© <span id="year"></span> H. R. Rocha — feito com HTML, CSS e JavaScript puros.</span>
+      © <span id="year"></span> Henrique de M. Rocha — feito com HTML, CSS e JS puros.
     </div>
   </footer>
 
   <script>
-    // Dados dos projetos (apontam para as subpastas criadas abaixo)
-    const PROJECTS = [
-      {
-        title: "LISTA DE TAREFAS ",
-        desc: "Lista de tarefas com LocalStorage e acessível no teclado.",
-        link: "./projetos/todo/index.html",
-        repo: "#",
-        tech: ["HTML","CSS","JS","LocalStorage"]
-      },
-      {
-        title: "Calculadora Simples",
-        desc: "Quatro operações, suporte ao teclado e prevenção de erros comuns.",
-        link: "./projetos/calculadora/index.html",
-        repo: "#",
-        tech: ["HTML","CSS","JS"]
-      },
-      {
-        title: "Contador/Timer",
-        desc: "Contador + timer regressivo com controles e ARIA-live.",
-        link: "./projetos/contador/index.html",
-        repo: "#",
-        tech: ["HTML","CSS","JS","A11y"]
-      }
-    ];
-
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const themeBtn = document.getElementById('themeBtn');
-    const saved = localStorage.getItem('theme'); if(saved) document.documentElement.dataset.theme = saved;
-    themeBtn.addEventListener('click', ()=>{
-      const cur = document.documentElement.dataset.theme;
-      const next = cur === 'light' ? 'dark' : (cur === 'dark' ? '' : 'light');
-      if(next) document.documentElement.dataset.theme = next; else delete document.documentElement.dataset.theme;
-      localStorage.setItem('theme', document.documentElement.dataset.theme || '');
-    });
-
-    // Canvas estrelas
-    const canvas = document.getElementById('stars'); const ctx = canvas.getContext('2d'); let W,H,stars=[];
-    function resize(){ W=canvas.width=innerWidth; H=canvas.height=innerHeight;
-      stars = Array.from({length: Math.min(140, Math.floor(W/10))}, ()=>({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.8+0.2,v:Math.random()*0.2+0.05}));}
-    addEventListener('resize',resize); resize();
-    function draw(){ ctx.clearRect(0,0,W,H); for(const s of stars){ ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2); ctx.fillStyle='rgba(34,225,255,.6)'; ctx.fill();
-      if(!prefersReduced){ s.y+=s.v; if(s.y>H){ s.y=-5; s.x=Math.random()*W } } } requestAnimationFrame(draw);} draw();
-
-    // Terminal typing
+    document.getElementById("year").textContent = new Date().getFullYear();
     const term = document.getElementById('terminal');
     const lines = [
-      "hr@rocha:~$ npm run build",
-      "> portfolio@1.0.0 build",
-      "> esbuild src --bundle --minify",
-      "✓ Build completed em 417ms",
-      "hr@rocha:~$ lighthouse https://portfolio.dev --perf --no-screenshots",
-      "Performance: 98  |  A11y: 100  |  Best Practices: 100  |  SEO: 100",
-      "hr@rocha:~$ git commit -m \"feat: projetos simples e skills intermediário\"",
-      "[main 1a2b3c4] feat: projetos simples e skills intermediário",
-      " 4 files changed, 220 insertions(+), 0 deletions(-)"
+      "henrique@rocha:~$ git log --oneline | tail -5",
+      "c43b21a (HEAD -> main) feat: refatoração de layout e animações",
+      "9c7b82a fix: correções de responsividade mobile",
+      "f13c29e feat: ajustes de acessibilidade e otimização",
+      "4a8e33d chore: adição de novos projetos e melhorias visuais",
+      "2b1d12a initial commit - estrutura base do portfólio",
+      "",
+      "⏳ Tempo total de desenvolvimento: 23 dias",
+      "✓ Build finalizado com sucesso!"
     ];
-    let i=0; (function typeNext(){ if(i>=lines.length) return; const p=document.createElement('div'); p.textContent=lines[i++];
-      term.appendChild(p); term.scrollTop=term.scrollHeight; setTimeout(typeNext, prefersReduced?0:480); })();
-
-    // Skills animate
-    const io = new IntersectionObserver(entries=>{ entries.forEach(e=>{ if(e.isIntersecting){ const el=e.target; el.style.width = el.dataset.level + '%'; io.unobserve(el); } }) },{threshold:.35});
-    document.querySelectorAll('.bar > span').forEach(b=>io.observe(b));
-
-    // Render projects + tilt
-    const grid = document.getElementById('projectsGrid');
-    function renderProjects(){
-      grid.innerHTML = '';
-      PROJECTS.forEach(p=>{
-        const article = document.createElement('article');
-        article.className = 'card col-6 proj'; article.tabIndex = 0;
-        article.innerHTML = `
-          <div class="thumb" aria-hidden="true">
-            <svg width="100%" height="100%" viewBox="0 0 160 90" preserveAspectRatio="none">
-              <defs><linearGradient id="g${p.title.replace(/\W/g,'')}" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stop-color="currentColor" stop-opacity=".25"/><stop offset="100%" stop-color="currentColor" stop-opacity=".05"/>
-              </linearGradient></defs>
-              <rect x="0" y="0" width="160" height="90" fill="url(#g${p.title.replace(/\W/g,'')})" />
-              <g opacity=".35">
-                <rect x="10" y="12" width="50" height="8" rx="2" fill="currentColor"/>
-                <rect x="10" y="26" width="90" height="6" rx="2" fill="currentColor"/>
-                <rect x="10" y="38" width="80" height="6" rx="2" fill="currentColor"/>
-                <rect x="10" y="54" width="120" height="24" rx="4" fill="currentColor"/>
-              </g>
-            </svg>
-          </div>
-          <h3 style="margin:0">${p.title}</h3>
-          <p class="muted" style="margin:0">${p.desc}</p>
-          <div class="stack">${p.tech.map(t=>`<span class="chip">${t}</span>`).join('')}</div>
-          <div style="display:flex; gap:.6rem; margin-top:auto; flex-wrap:wrap">
-            <a class="btn ghost" href="${p.link}" target="_blank" rel="noopener">Live</a>
-            <a class="btn ghost" href="${p.repo}" target="_blank" rel="noopener">Código</a>
-          </div>`;
-        article.addEventListener('pointermove', (e)=>{
-          const r = article.getBoundingClientRect();
-          const x = (e.clientX - r.left) / r.width;
-          const y = (e.clientY - r.top) / r.height;
-          const rx = (y - .5) * -6, ry = (x - .5) * 6;
-          article.style.transform = `perspective(800px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-2px)`;
-        });
-        ['pointerleave','blur'].forEach(ev=>article.addEventListener(ev,()=>article.style.transform=''));
-        grid.appendChild(article);
-      });
-    }
-    renderProjects();
-
-    // Form mailto
-    document.getElementById('contactForm').addEventListener('submit',(e)=>{
-      e.preventDefault();
-      const data = new FormData(e.currentTarget);
-      const subject = encodeURIComponent(`Contato — H. R. Rocha — ${data.get('nome')}`);
-      const body = encodeURIComponent(`Nome: ${data.get('nome')}\nEmail: ${data.get('email')}\n\n${data.get('mensagem')}`);
-      window.location.href = `mailto:hr.rocha1198@gmail.com?subject=${subject}&body=${body}`;
-    });
-
-    document.getElementById('year').textContent = new Date().getFullYear();
+    let i=0;
+    (function typeNext(){
+      if(i>=lines.length) return;
+      const p=document.createElement('div');
+      p.textContent=lines[i++];
+      term.appendChild(p);
+      term.scrollTop=term.scrollHeight;
+      setTimeout(typeNext,480);
+    })();
   </script>
 </body>
 </html>
