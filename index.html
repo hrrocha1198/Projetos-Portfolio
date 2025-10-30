@@ -50,6 +50,31 @@
     .term-head{display:flex; gap:.4rem; align-items:center; padding:10px 12px; border-bottom:1px solid var(--stroke)}
     .dot{width:10px; height:10px; border-radius:50%} .dot.r{background:#ff5f57}.dot.y{background:#ffbd2e}.dot.g{background:#28c840}
     .term-body{padding:16px; font-size:.9rem; max-height:320px; overflow:auto; white-space:pre-wrap}
+
+    section{padding:52px 0} .section-head{display:flex; align-items:center; justify-content:space-between; margin-bottom:18px}
+    h2{margin:0; font-size:clamp(1.4rem, 1.4rem + 1vw, 2rem)}
+    .grid{display:grid; gap:18px; grid-template-columns:repeat(12,1fr)} .col-4{grid-column:span 4} .col-6{grid-column:span 6} .col-8{grid-column:span 8}
+    .card{background:linear-gradient(180deg,var(--card),transparent); border:1px solid var(--stroke); border-radius:var(--radius); padding:18px; position:relative; overflow:hidden;
+      transition:transform .2s ease, border-color .2s ease; will-change:transform}
+    .card:hover{transform:translateY(-2px); border-color:rgba(34,225,255,.45)}
+    .kpi{font:800 2rem var(--mono)} .muted{color:var(--muted)}
+
+    .projects{row-gap:22px}
+    .proj{display:flex; flex-direction:column; gap:14px; min-height:240px;
+      background: radial-gradient(120% 120% at -30% -30%, rgba(34,225,255,.13), transparent 60%), linear-gradient(180deg, var(--card), transparent)}
+    .proj .thumb{aspect-ratio:16/9; border-radius:12px; border:1px solid var(--stroke);
+      background:linear-gradient(135deg, rgba(34,225,255,.15), rgba(168,85,247,.15)); display:grid; place-items:center; font:700 .9rem var(--mono); color:var(--muted);
+      position:relative; overflow:hidden}
+
+    .skill{display:grid; gap:8px}
+    .bar{height:10px; border-radius:999px; background:rgba(255,255,255,.08); overflow:hidden; border:1px solid var(--stroke)}
+    .bar > span{display:block; height:100%; width:0%; background:linear-gradient(90deg,var(--primary),var(--accent)); transition:width 1.2s ease}
+
+    input,textarea{width:100%; padding:12px 14px; border-radius:12px; border:1px solid var(--stroke); background:var(--bg-2); color:var(--text); font:500 1rem var(--sans)}
+    textarea{min-height:120px; resize:vertical} .helper{font:.85rem var(--mono); color:var(--muted)}
+    footer{padding:36px 0 56px; color:var(--muted); border-top:1px solid var(--stroke)}
+
+    @media (max-width:900px){.hero-grid{grid-template-columns:1fr} .col-8,.col-6,.col-4{grid-column:span 12}}
   </style>
 </head>
 <body>
@@ -65,7 +90,7 @@
         <a class="btn ghost" href="#projetos">Projetos</a>
         <button class="theme" id="themeBtn" aria-label="Alternar tema" title="Alternar tema">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M12 3a9 9 0 1 0 9 9c0-4.97-4.03-9-9-9Z" stroke="currentColor" stroke-width="1.7"/>
+            <path d="M12 3a 9 9 0 1 0 9 9c0-4.97-4.03-9-9-9Z" stroke="currentColor" stroke-width="1.7"/>
           </svg>
         </button>
         <a class="btn" href="#contato">Entrar em contato</a>
@@ -90,7 +115,7 @@
         <div class="terminal" aria-label="Terminal de exemplo">
           <div class="term-head">
             <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
-            <span style="margin-left:.6rem; opacity:.7">git log — últimos commits</span>
+            <span style="margin-left:.6rem; opacity:.7">npm run build / lighthouse</span>
           </div>
           <div class="term-body" id="terminal" role="region" aria-live="polite"></div>
         </div>
@@ -193,127 +218,76 @@
       <span>© <span id="year"></span> Henrique de M. Rocha — feito com HTML, CSS e JavaScript puros.</span>
     </div>
   </footer>
-  <script>
-    // Dados dos projetos
-    const PROJECTS = [
-      {
-        title: "Lista de Tarefas",
-        desc: "Lista de tarefas com LocalStorage e acessível no teclado.",
-        link: "./projetos/todo/index.html",
-        repo: "#",
-        tech: ["HTML","CSS","JS","LocalStorage"]
-      },
-      {
-        title: "Calculadora Simples",
-        desc: "Quatro operações, suporte ao teclado e prevenção de erros comuns.",
-        link: "./projetos/calculadora/index.html",
-        repo: "#",
-        tech: ["HTML","CSS","JS"]
-      },
-      {
-        title: "Contador/Timer",
-        desc: "Contador + timer regressivo com controles e ARIA-live.",
-        link: "./projetos/contador/index.html",
-        repo: "#",
-        tech: ["HTML","CSS","JS","A11y"]
-      }
-    ];
 
+  <script>
+    // Preferências de movimento
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Tema
     const themeBtn = document.getElementById('themeBtn');
     const saved = localStorage.getItem('theme'); 
     if(saved) document.documentElement.dataset.theme = saved;
-
-    themeBtn.addEventListener('click', ()=>{
+    themeBtn?.addEventListener('click', ()=>{
       const cur = document.documentElement.dataset.theme;
       const next = cur === 'light' ? 'dark' : (cur === 'dark' ? '' : 'light');
-      if(next) document.documentElement.dataset.theme = next; 
-      else delete document.documentElement.dataset.theme;
+      if(next) document.documentElement.dataset.theme = next; else delete document.documentElement.dataset.theme;
       localStorage.setItem('theme', document.documentElement.dataset.theme || '');
     });
 
-    // Canvas estrelas
-    const canvas = document.getElementById('stars'); 
-    const ctx = canvas.getContext('2d'); 
-    let W,H,stars=[];
-    function resize(){ 
-      W=canvas.width=innerWidth; 
-      H=canvas.height=innerHeight;
-      stars = Array.from({length: Math.min(140, Math.floor(W/10))}, ()=>({
-        x:Math.random()*W,
-        y:Math.random()*H,
-        r:Math.random()*1.8+0.2,
-        v:Math.random()*0.2+0.05
-      }));
+    // Fundo de estrelas — leve e suave
+    const canvas = document.getElementById('stars'); const ctx = canvas.getContext('2d'); let W,H,stars=[];
+    function resize(){ W=canvas.width=innerWidth; H=canvas.height=innerHeight;
+      const n = Math.min(140, Math.floor(W/10));
+      stars = Array.from({length:n}, ()=>({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.8+0.2,v:Math.random()*0.2+0.05}));
     }
-    addEventListener('resize',resize); 
-    resize();
-    function draw(){ 
-      ctx.clearRect(0,0,W,H); 
-      for(const s of stars){ 
-        ctx.beginPath(); 
-        ctx.arc(s.x,s.y,s.r,0,Math.PI*2); 
-        ctx.fillStyle='rgba(34,225,255,.6)'; 
-        ctx.fill();
-        if(!prefersReduced){ 
-          s.y+=s.v; 
-          if(s.y>H){ s.y=-5; s.x=Math.random()*W } 
-        } 
-      } 
-      requestAnimationFrame(draw);
-    } 
-    draw();
+    function step(){ ctx.clearRect(0,0,W,H);
+      for(const s of stars){ ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2); ctx.fillStyle='rgba(34,225,255,.6)'; ctx.fill();
+        if(!prefersReduced){ s.y+=s.v; if(s.y>H){ s.y=-5; s.x=Math.random()*W } } }
+      requestAnimationFrame(step);
+    }
+    addEventListener('resize', resize, {passive:true}); resize(); step();
 
-    // Terminal typing (mostra commits e tempo total)
+    // Terminal (versão original fluida)
     const term = document.getElementById('terminal');
     const lines = [
-      "henrique@rocha:~$ git log --oneline | tail -5",
-      "c43b21a (HEAD -> main) feat: refatoração de layout e animações",
-      "9c7b82a fix: correções de responsividade mobile",
-      "f13c29e feat: ajustes de acessibilidade e otimização",
-      "4a8e33d chore: adição de novos projetos e melhorias visuais",
-      "2b1d12a initial commit - estrutura base do portfólio",
-      "",
-      "⏳ Tempo total de desenvolvimento: 23 dias",
-      "✓ Build finalizado com sucesso!"
+      "hr@rocha:~$ npm run build",
+      "> portfolio@1.0.0 build",
+      "> esbuild src --bundle --minify",
+      "✓ Build completed em 417ms",
+      "hr@rocha:~$ lighthouse https://portfolio.dev --perf --no-screenshots",
+      "Performance: 98  |  A11y: 100  |  Best Practices: 100  |  SEO: 100",
+      "hr@rocha:~$ git commit -m \"feat: projetos simples e skills intermediário\"",
+      "[main 1a2b3c4] feat: projetos simples e skills intermediário",
+      " 4 files changed, 220 insertions(+), 0 deletions(-)"
     ];
-    let i=0; 
-    (function typeNext(){ 
-      if(i>=lines.length) return; 
-      const p=document.createElement('div'); 
-      p.textContent=lines[i++]; 
-      term.appendChild(p); 
-      term.scrollTop=term.scrollHeight; 
-      setTimeout(typeNext, prefersReduced?0:480); 
-    })();
+    let i=0; (function typeNext(){ if(i>=lines.length) return; const p=document.createElement('div'); p.textContent=lines[i++];
+      term.appendChild(p); term.scrollTop=term.scrollHeight; setTimeout(typeNext, prefersReduced?0:480); })();
 
-    // Skills animate
+    // Skills (preenchimento suave quando entram na tela)
     const io = new IntersectionObserver(entries=>{
-      entries.forEach(e=>{
-        if(e.isIntersecting){
-          const el=e.target; 
-          el.style.width = el.dataset.level + '%'; 
-          io.unobserve(el); 
-        }
-      })
+      entries.forEach(e=>{ if(e.isIntersecting){ const el=e.target; el.style.width = el.dataset.level + '%'; io.unobserve(el); } });
     },{threshold:.35});
     document.querySelectorAll('.bar > span').forEach(b=>io.observe(b));
 
-    // Render projects
+    // Render dos cards de projeto + tilt suave
+    const PROJECTS = [
+      { title:"Lista de Tarefas", desc:"Lista de tarefas com LocalStorage e acessível no teclado.", link:"./projetos/todo/index.html", repo:"#", tech:["HTML","CSS","JS","LocalStorage"] },
+      { title:"Calculadora Simples", desc:"Quatro operações, suporte ao teclado e prevenção de erros comuns.", link:"./projetos/calculadora/index.html", repo:"#", tech:["HTML","CSS","JS"] },
+      { title:"Contador/Timer", desc:"Contador + timer regressivo com controles e ARIA-live.", link:"./projetos/contador/index.html", repo:"#", tech:["HTML","CSS","JS","A11y"] }
+    ];
     const grid = document.getElementById('projectsGrid');
     function renderProjects(){
       grid.innerHTML = '';
       PROJECTS.forEach(p=>{
         const article = document.createElement('article');
-        article.className = 'card col-6 proj'; 
-        article.tabIndex = 0;
+        article.className = 'card col-6 proj'; article.tabIndex = 0;
         article.innerHTML = `
           <div class="thumb" aria-hidden="true">
             <svg width="100%" height="100%" viewBox="0 0 160 90" preserveAspectRatio="none">
-              <defs><linearGradient id="g${p.title.replace(/\W/g,'')}" x1="0" y1="0" x2="1" y2="1">
+              <defs><linearGradient id="g${p.title.replace(/\\W/g,'')}" x1="0" y1="0" x2="1" y2="1">
                 <stop offset="0%" stop-color="currentColor" stop-opacity=".25"/><stop offset="100%" stop-color="currentColor" stop-opacity=".05"/>
               </linearGradient></defs>
-              <rect x="0" y="0" width="160" height="90" fill="url(#g${p.title.replace(/\W/g,'')})" />
+              <rect x="0" y="0" width="160" height="90" fill="url(#g${p.title.replace(/\\W/g,'')})" />
               <g opacity=".35">
                 <rect x="10" y="12" width="50" height="8" rx="2" fill="currentColor"/>
                 <rect x="10" y="26" width="90" height="6" rx="2" fill="currentColor"/>
@@ -329,6 +303,14 @@
             <a class="btn ghost" href="${p.link}" target="_blank" rel="noopener">Live</a>
             <a class="btn ghost" href="${p.repo}" target="_blank" rel="noopener">Código</a>
           </div>`;
+        article.addEventListener('pointermove', (e)=>{
+          const r = article.getBoundingClientRect();
+          const x = (e.clientX - r.left) / r.width;
+          const y = (e.clientY - r.top) / r.height;
+          const rx = (y - .5) * -6, ry = (x - .5) * 6;
+          article.style.transform = `perspective(800px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-2px)`;
+        });
+        ['pointerleave','blur'].forEach(ev=>article.addEventListener(ev,()=>article.style.transform=''));
         grid.appendChild(article);
       });
     }
